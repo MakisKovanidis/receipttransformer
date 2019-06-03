@@ -1,39 +1,49 @@
+import java.util.HashMap;
+import java.util.Map;
+
 public class Vat {
 
-    private int vatcategory;
-    private float netsales;
+    private HashMap <Integer, Float> vatCategories = new HashMap<>();
 
 
-    public Vat(int vatcategory, float netsales) {
-        this.vatcategory = vatcategory;
-        this.netsales = netsales;
+    public Vat() {
     }
 
-    public int getVatcategory() {
-        return vatcategory;
+    public HashMap<Integer, Float> getVatCategories() {
+        return vatCategories;
     }
 
-    public void setVatcategory(int vatcategory) {
-        this.vatcategory = vatcategory;
+    public void setVatCategories(HashMap<Integer, Float> vatCategories) {
+        this.vatCategories = vatCategories;
     }
 
-    public float getNetsales() {
-        return netsales;
+    public void addSales(int vatCategory, float netSales){
+
+        float tempNetSales = 0;
+        if (this.vatCategories.containsKey(vatCategory)){
+            this.vatCategories.put(vatCategory, this.vatCategories.get(vatCategory)+ netSales);
+            // tempNetSales = this.vatCategories.get(vatCategory) + netSales;
+            }
+        else {
+            this.vatCategories.put(vatCategory, netSales);
+        }
     }
 
-    public void setNetsales(float netsales) {
-        this.netsales = netsales;
-    }
+    public void printVat(){
 
-    public void addNetSales(float argNetSales){
-        this.netsales= this.netsales + argNetSales;
-    }
+        for (Map.Entry me : this.vatCategories.entrySet()) {
+            int vatCat = ((int) me.getKey());
+            float gross = ((float) me.getValue());
 
-    public boolean hasVatCategory(int ArgVatCategory){
-        if (this.vatcategory == ArgVatCategory)
-            return true;
-        else
-            return false;
+            float clearvalue =(float) ((gross)/((vatCat*0.01)+1.00));
+
+            float roundedValue = (float) Math.round(clearvalue * 100) / 100;
+
+            float vatValue = (float) Math.round((gross-roundedValue) * 100) / 100;
+
+
+            System.out.println("Key: "+me.getKey() + " & gross " + me.getValue() +" & Value: " + roundedValue + " & Vat: " + vatValue);
+        }
     }
 
 }
